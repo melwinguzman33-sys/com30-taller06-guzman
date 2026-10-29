@@ -1,7 +1,22 @@
-<app-registro-form />
+<main class="contenedor">
+  <app-registro-form />
 
-<p>Total: {{ servicio.total() }} · Pendientes: {{ servicio.pendientes() }}</p>
+  <section class="resumen">
+    <span>Total: <strong>{{ servicio.total() }}</strong></span>
+    <span>Pendientes: <strong>{{ servicio.pendientes() }}</strong></span>
+  </section>
 
-@for (r of servicio.registros(); track r.id) {
-  <p>{{ r.solicitante }} · {{ r.prioridad }} · {{ r.estado }}</p>
-}
+  <ul class="lista">
+    @for (r of servicio.registros(); track r.id) {
+      <li>
+        <div>
+          <strong>{{ r.solicitante }}</strong>
+          <span>{{ r.categoria }} · {{ r.prioridad }}</span>
+        </div>
+        <span class="estado">{{ r.estado }}</span>
+      </li>
+    } @empty {
+      <li class="vacio">Aún no hay solicitudes registradas</li>
+    }
+  </ul>
+</main>

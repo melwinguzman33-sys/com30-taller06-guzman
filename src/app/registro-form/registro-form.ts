@@ -7,6 +7,8 @@ import { Prioridad } from '../registro.model';
   selector: 'app-registro-form',
   imports: [ReactiveFormsModule],
   templateUrl: './registro-form.html',
+    styleUrl: './registro-form.css',
+
 })
 export class RegistroForm {
   private fb = inject(FormBuilder).nonNullable;
