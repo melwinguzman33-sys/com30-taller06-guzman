@@ -1,0 +1,25 @@
+<form [formGroup]="form" (ngSubmit)="enviar()">
+  <input formControlName="solicitante" placeholder="Solicitante" />
+  @if (form.controls.solicitante.invalid && (form.controls.solicitante.touched || form.controls.solicitante.dirty)) {
+    <small>Solicitante requerido (mínimo 3 caracteres)</small>
+  }
+
+  <input formControlName="correo" placeholder="Correo institucional" />
+  @if (form.controls.correo.invalid && (form.controls.correo.touched || form.controls.correo.dirty)) {
+    <small>Correo inválido</small>
+  }
+
+  <select formControlName="categoria">
+    <option value="">Categoría...</option>
+    @for (c of categorias; track c) { <option [value]="c">{{ c }}</option> }
+  </select>
+
+  <select formControlName="prioridad">
+    @for (p of prioridades; track p) { <option [value]="p">{{ p }}</option> }
+  </select>
+
+  <textarea formControlName="descripcion" placeholder="Descripción"></textarea>
+  <input formControlName="impacto" placeholder="Impacto" />
+
+  <button type="submit">Registrar</button>
+</form>
