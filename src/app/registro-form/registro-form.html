@@ -58,7 +58,10 @@
   <div class="campo">
     <label for="impacto">Impacto</label>
     <input id="impacto" formControlName="impacto" placeholder="Obligatorio si la prioridad es Crítica" />
-  </div>
+      @if (form.hasError('impactoRequerido') && (form.controls.impacto.touched || form.controls.impacto.dirty)) {
+      <small class="error">El impacto es obligatorio cuando la prioridad es Crítica</small>
+    }
+</div>
 
   <button type="submit">Registrar</button>
 </form>

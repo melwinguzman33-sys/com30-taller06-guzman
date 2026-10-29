@@ -2,13 +2,13 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RegistroService } from '../registro.service';
 import { Prioridad } from '../registro.model';
-import { sinSoloEspacios } from '../validadores';
+import { sinSoloEspacios, impactoSiCritica } from '../validadores';
 
 @Component({
   selector: 'app-registro-form',
   imports: [ReactiveFormsModule],
   templateUrl: './registro-form.html',
-    styleUrl: './registro-form.css',
+  styleUrl: './registro-form.css',
 
 })
 export class RegistroForm {
@@ -25,7 +25,7 @@ export class RegistroForm {
     prioridad: ['Media' as Prioridad, Validators.required],
     descripcion: ['', [Validators.required, Validators.minLength(10)]],
     impacto: [''],
-  });
+  }, { validators: [impactoSiCritica] });
 
   enviar(): void {
     if (this.form.invalid) {
