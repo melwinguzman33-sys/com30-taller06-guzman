@@ -1,25 +1,63 @@
-<form [formGroup]="form" (ngSubmit)="enviar()">
-  <input formControlName="solicitante" placeholder="Solicitante" />
-  @if (form.controls.solicitante.invalid && (form.controls.solicitante.touched || form.controls.solicitante.dirty)) {
-    <small>Solicitante requerido (mínimo 3 caracteres)</small>
-  }
+<form [formGroup]="form" (ngSubmit)="enviar()" class="formulario">
+  <h2>Nueva solicitud · Mesa de ayuda TI</h2>
 
-  <input formControlName="correo" placeholder="Correo institucional" />
-  @if (form.controls.correo.invalid && (form.controls.correo.touched || form.controls.correo.dirty)) {
-    <small>Correo inválido</small>
-  }
+  <div class="campo">
+    <label for="solicitante">Solicitante</label>
+    <input id="solicitante" formControlName="solicitante" placeholder="Nombre completo" />
+    @if (form.controls.solicitante.invalid && (form.controls.solicitante.touched || form.controls.solicitante.dirty)) {
+      <small class="error">
+        @if (form.controls.solicitante.hasError('required')) { El solicitante es obligatorio }
+        @else if (form.controls.solicitante.hasError('minlength')) { Mínimo 3 caracteres }
+      </small>
+    }
+  </div>
 
-  <select formControlName="categoria">
-    <option value="">Categoría...</option>
-    @for (c of categorias; track c) { <option [value]="c">{{ c }}</option> }
-  </select>
+  <div class="campo">
+    <label for="correo">Correo institucional</label>
+    <input id="correo" formControlName="correo" placeholder="nombre@dominio.edu.co" />
+    @if (form.controls.correo.invalid && (form.controls.correo.touched || form.controls.correo.dirty)) {
+      <small class="error">
+        @if (form.controls.correo.hasError('required')) { El correo es obligatorio }
+        @else if (form.controls.correo.hasError('email')) { El formato del correo no es válido }
+      </small>
+    }
+  </div>
 
-  <select formControlName="prioridad">
-    @for (p of prioridades; track p) { <option [value]="p">{{ p }}</option> }
-  </select>
+  <div class="fila">
+    <div class="campo">
+      <label for="categoria">Categoría</label>
+      <select id="categoria" formControlName="categoria">
+        <option value="">Seleccione...</option>
+        @for (c of categorias; track c) { <option [value]="c">{{ c }}</option> }
+      </select>
+      @if (form.controls.categoria.invalid && (form.controls.categoria.touched || form.controls.categoria.dirty)) {
+        <small class="error">Seleccione una categoría</small>
+      }
+    </div>
 
-  <textarea formControlName="descripcion" placeholder="Descripción"></textarea>
-  <input formControlName="impacto" placeholder="Impacto" />
+    <div class="campo">
+      <label for="prioridad">Prioridad</label>
+      <select id="prioridad" formControlName="prioridad">
+        @for (p of prioridades; track p) { <option [value]="p">{{ p }}</option> }
+      </select>
+    </div>
+  </div>
+
+  <div class="campo">
+    <label for="descripcion">Descripción</label>
+    <textarea id="descripcion" formControlName="descripcion" rows="3" placeholder="Describa el problema"></textarea>
+    @if (form.controls.descripcion.invalid && (form.controls.descripcion.touched || form.controls.descripcion.dirty)) {
+      <small class="error">
+        @if (form.controls.descripcion.hasError('required')) { La descripción es obligatoria }
+        @else if (form.controls.descripcion.hasError('minlength')) { Mínimo 10 caracteres }
+      </small>
+    }
+  </div>
+
+  <div class="campo">
+    <label for="impacto">Impacto</label>
+    <input id="impacto" formControlName="impacto" placeholder="Obligatorio si la prioridad es Crítica" />
+  </div>
 
   <button type="submit">Registrar</button>
 </form>
