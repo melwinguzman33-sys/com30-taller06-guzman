@@ -8,6 +8,7 @@
       <small class="error">
         @if (form.controls.solicitante.hasError('required')) { El solicitante es obligatorio }
         @else if (form.controls.solicitante.hasError('minlength')) { Mínimo 3 caracteres }
+        @else if (form.controls.solicitante.hasError('soloEspacios')) { No puede contener solo espacios }
       </small>
     }
   </div>
