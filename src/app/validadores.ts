@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, FormArray, ValidationErrors, ValidatorFn } from '@angular/forms';
 
 export function sinSoloEspacios(control: AbstractControl): ValidationErrors | null {
   const valor = control.value;
@@ -22,3 +22,12 @@ export const impactoSiCritica: ValidatorFn = (
     (typeof impacto !== 'string' || impacto.trim().length === 0);
   return falta ? { impactoRequerido: true } : null;
 };
+
+// Validador propio de FormArray: exige un mínimo de filas.
+// Clave de error: 'minimoItems'
+export function minimoItems(min: number): ValidatorFn {
+  return (control: AbstractControl): ValidationErrors | null => {
+    const filas = control instanceof FormArray ? control.length : 0;
+    return filas < min ? { minimoItems: { requerido: min, actual: filas } } : null;
+  };
+}

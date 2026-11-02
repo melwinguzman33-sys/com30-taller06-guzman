@@ -63,5 +63,33 @@
     }
 </div>
 
-  <button type="submit">Registrar</button>
+  <fieldset class="campo" formArrayName="items">
+    <legend>Equipos afectados</legend>
+    @for (fila of items.controls; track fila; let i = $index) {
+      <div class="fila" [formGroupName]="i">
+        <div class="campo">
+          <input formControlName="codigo" placeholder="Código (PC-001)" />
+          @if (fila.controls.codigo.invalid && (fila.controls.codigo.touched || fila.controls.codigo.dirty)) {
+            <small class="error">
+              @if (fila.controls.codigo.hasError('required')) { Código obligatorio }
+              @else if (fila.controls.codigo.hasError('pattern')) { Formato inválido (ej. PC-001) }
+            </small>
+          }
+        </div>
+        <div class="campo">
+          <input formControlName="ubicacion" placeholder="Ubicación" />
+          @if (fila.controls.ubicacion.invalid && (fila.controls.ubicacion.touched || fila.controls.ubicacion.dirty)) {
+            <small class="error">Ubicación obligatoria</small>
+          }
+        </div>
+        <button type="button" (click)="quitarItem(i)">Quitar</button>
+      </div>
+    }
+    @if (items.hasError('minimoItems')) {
+      <small class="error">Agregue al menos un equipo afectado</small>
+    }
+    <button type="button" (click)="agregarItem()">+ Agregar equipo</button>
+  </fieldset>
+
+  <button type="submit" [disabled]="items.hasError('minimoItems')">Registrar</button>
 </form>
