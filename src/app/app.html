@@ -1,19 +1,27 @@
 <main class="contenedor">
   <app-registro-form />
 
-  <section class="resumen">
-    <span>Total: <strong>{{ servicio.total() }}</strong></span>
-    <span>Pendientes: <strong>{{ servicio.pendientes() }}</strong></span>
-  </section>
+  @defer (on timer(800ms)) {
+    <app-resumen />
+  } @placeholder {
+    <p class="vacio">Resumen pendiente de cargar...</p>
+  } @loading {
+    <p class="vacio">Cargando resumen...</p>
+  }
 
   <ul class="lista">
     @for (r of servicio.registros(); track r.id) {
       <li>
         <div>
           <strong>{{ r.solicitante }}</strong>
-          <span>{{ r.categoria }} · {{ r.prioridad }}</span>
+          <span>{{ r.categoria }} · {{ r.prioridad }} · {{ r.items.length }} equipo(s)</span>
         </div>
-        <span class="estado">{{ r.estado }}</span>
+        <div>
+          <select [value]="r.estado" (change)="cambiarEstado(r.id, $any($event.target).value)">
+            @for (e of estados; track e) { <option [value]="e">{{ e }}</option> }
+          </select>
+          <button type="button" (click)="eliminar(r.id)">Eliminar</button>
+        </div>
       </li>
     } @empty {
       <li class="vacio">Aún no hay solicitudes registradas</li>
