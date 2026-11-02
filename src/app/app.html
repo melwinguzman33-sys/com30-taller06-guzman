@@ -16,11 +16,17 @@
           <strong>{{ r.solicitante }}</strong>
           <span>{{ r.categoria }} · {{ r.prioridad }} · {{ r.items.length }} equipo(s)</span>
         </div>
-        <div>
-          <select [value]="r.estado" (change)="cambiarEstado(r.id, $any($event.target).value)">
-            @for (e of estados; track e) { <option [value]="e">{{ e }}</option> }
+        <div class="acciones">
+          <select
+            class="select-estado"
+            [value]="r.estado"
+            (change)="cambiarEstado(r.id, $any($event.target).value)"
+          >
+            @for (e of estados; track e) {
+              <option [value]="e">{{ e }}</option>
+            }
           </select>
-          <button type="button" (click)="eliminar(r.id)">Eliminar</button>
+          <button type="button" class="btn-eliminar" (click)="eliminar(r.id)">Eliminar</button>
         </div>
       </li>
     } @empty {
