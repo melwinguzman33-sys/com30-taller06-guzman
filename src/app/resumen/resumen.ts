@@ -9,7 +9,10 @@ import { RegistroService } from '../registro.service';
       <span>Pendientes: <strong>{{ servicio.pendientes() }}</strong></span>
     </section>
   `,
+  styleUrl: './resumen.css',
 })
 export class Resumen {
   servicio = inject(RegistroService);
+    
 }
+
