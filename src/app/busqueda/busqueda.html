@@ -50,4 +50,15 @@
       </tbody>
     </table>
   }
+
+  <div class="historial">
+    <h3>Últimas consultas</h3>
+    <ol>
+      @for (h of historial(); track $index) {
+        <li>{{ h }}</li>
+      } @empty {
+        <li>Sin consultas todavía</li>
+      }
+    </ol>
+  </div>
 </section>

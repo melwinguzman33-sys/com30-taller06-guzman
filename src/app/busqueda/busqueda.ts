@@ -1,7 +1,7 @@
 import { Component, computed, inject, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, finalize, map, of, share, switchMap, tap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, finalize, map, of, share, switchMap, tap } from 'rxjs';
 import { RegistroService } from '../registro.service';
 import { Estado, Registro } from '../registro.model';
 
@@ -55,6 +55,19 @@ export class Busqueda {
     const lista = this.registros();
     return f === 'Todos' ? lista : lista.filter(r => r.estado === f);
   });
+
+  // 6. Historial de las 5 últimas consultas (la más reciente primero).
+  //    subscribe con takeUntilDestroyed: se cancela al destruir el componente.
+  readonly historial = signal<string[]>([]);
+
+  constructor() {
+    this.texto$
+      .pipe(
+        filter(t => t.length >= 2),
+        takeUntilDestroyed(),
+      )
+      .subscribe(t => this.historial.update(h => [t, ...h].slice(0, 5)));
+  }
 
   // 5. Total y conteo por estado de lo que se muestra.
   readonly total = computed(() => this.visibles().length);
