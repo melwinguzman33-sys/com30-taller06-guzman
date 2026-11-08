@@ -1,9 +1,11 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, finalize, map, of, share, switchMap, tap } from 'rxjs';
 import { RegistroService } from '../registro.service';
-import { Registro } from '../registro.model';
+import { Estado, Registro } from '../registro.model';
+
+type Filtro = 'Todos' | Estado;
 
 @Component({
   selector: 'app-busqueda',
@@ -43,4 +45,24 @@ export class Busqueda {
 
   // 3. Resultado expuesto como signal con valor inicial.
   readonly registros = toSignal(this.resultado$, { initialValue: [] as Registro[] });
+
+  // 4. Filtro por estado sobre el resultado: no vuelve a consultar el servicio.
+  readonly estados: Estado[] = ['Pendiente', 'En proceso', 'Resuelta'];
+  readonly filtro = signal<Filtro>('Todos');
+
+  readonly visibles = computed(() => {
+    const f = this.filtro();
+    const lista = this.registros();
+    return f === 'Todos' ? lista : lista.filter(r => r.estado === f);
+  });
+
+  // 5. Total y conteo por estado de lo que se muestra.
+  readonly total = computed(() => this.visibles().length);
+  readonly conteo = computed(() => {
+    const lista = this.registros();
+    return this.estados.map(e => ({
+      estado: e,
+      cantidad: lista.filter(r => r.estado === e).length,
+    }));
+  });
 }

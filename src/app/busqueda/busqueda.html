@@ -16,12 +16,28 @@
   } @else if (buscando()) {
     <p class="mensaje buscando">Buscando…</p>
   } @else {
+    <div class="filtros" role="group" aria-label="Filtrar por estado">
+      <button type="button" [class.activo]="filtro() === 'Todos'" (click)="filtro.set('Todos')">
+        Todos ({{ registros().length }})
+      </button>
+      @for (c of conteo(); track c.estado) {
+        <button type="button" [class.activo]="filtro() === c.estado" (click)="filtro.set(c.estado)">
+          {{ c.estado }} ({{ c.cantidad }})
+        </button>
+      }
+    </div>
+
+    <p class="conteo">
+      <span>Mostrando <strong>{{ total() }}</strong> de {{ registros().length }}</span>
+      <span>Filtro: <strong>{{ filtro() }}</strong></span>
+    </p>
+
     <table>
       <thead>
         <tr><th>Cód.</th><th>Solicitante</th><th>Descripción</th><th>Estado</th></tr>
       </thead>
       <tbody>
-        @for (r of registros(); track r.id) {
+        @for (r of visibles(); track r.id) {
           <tr>
             <td>R{{ r.id < 10 ? '0' + r.id : r.id }}</td>
             <td>{{ r.solicitante }}</td>
