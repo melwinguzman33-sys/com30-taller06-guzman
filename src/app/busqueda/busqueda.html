@@ -1,0 +1,37 @@
+<section class="busqueda">
+  <div class="cabecera">
+    <h2>Búsqueda de solicitudes</h2>
+    <span class="llamadas">Llamadas: <strong>{{ llamadas() }}</strong></span>
+  </div>
+
+  <input
+    type="search"
+    [formControl]="busqueda"
+    placeholder="Buscar por solicitante o descripción"
+    aria-label="Buscar solicitudes"
+  />
+
+  @if (texto().length < 2) {
+    <p class="mensaje">Escriba al menos 2 caracteres para buscar.</p>
+  } @else if (buscando()) {
+    <p class="mensaje buscando">Buscando…</p>
+  } @else {
+    <table>
+      <thead>
+        <tr><th>Cód.</th><th>Solicitante</th><th>Descripción</th><th>Estado</th></tr>
+      </thead>
+      <tbody>
+        @for (r of registros(); track r.id) {
+          <tr>
+            <td>R{{ r.id < 10 ? '0' + r.id : r.id }}</td>
+            <td>{{ r.solicitante }}</td>
+            <td>{{ r.descripcion }}</td>
+            <td><span class="estado">{{ r.estado }}</span></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="4" class="mensaje">Sin coincidencias</td></tr>
+        }
+      </tbody>
+    </table>
+  }
+</section>

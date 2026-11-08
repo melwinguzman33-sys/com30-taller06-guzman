@@ -1,12 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { RegistroForm } from './registro-form/registro-form';
 import { Resumen } from './resumen/resumen';
+import { Busqueda } from './busqueda/busqueda';
 import { RegistroService } from './registro.service';
 import { Estado } from './registro.model';
 
 @Component({
   selector: 'app-root',
-  imports: [RegistroForm, Resumen],
+  imports: [Busqueda, RegistroForm, Resumen],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })
