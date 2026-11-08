@@ -1,59 +1,45 @@
-# Com30Taller06GUZMAN
+# COM30 · Talleres 06 y 07 · Mesa de ayuda de TI
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.2.5.
+**Autor:** Melwin David Guzmán Guzmán
+**Curso:** COM30 Programación con Frameworks para Web · 2026-III · Institución Universitaria de Barranquilla
 
-## Development server
+## Escenario
 
-To start a local development server, run:
+E1 · Mesa de ayuda de TI. Una sola pantalla para registrar y gestionar solicitudes de soporte
+(solicitante, correo institucional, categoría, prioridad, descripción, impacto y equipos afectados).
+Los datos viven en memoria, en `RegistroService`. No hay rutas ni HttpClient.
 
-```bash
-ng serve
-```
+- **Taller 06:** formulario reactivo con validadores propios y de grupo, FormArray de equipos,
+  servicio con signals, listado con `@for`/`@empty` y resumen con `@defer`.
+- **Taller 07:** búsqueda reactiva sobre las solicitudes (componente `src/app/busqueda`).
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+## Taller 07 · Búsqueda reactiva
 
-## Code scaffolding
+| Pieza | Dónde |
+|---|---|
+| Semilla de 12 registros (3 estados) | `src/app/semilla.ts` |
+| `buscar(texto)` con retardo `max(150, 1500 − 300 × longitud)` ms y signal `llamadas` con `asReadonly()` | `src/app/registro.service.ts` |
+| `FormControl` → `valueChanges` → `map(trim)` → `debounceTime(300)` → `distinctUntilChanged()` → `switchMap` (`of([])` bajo 2 caracteres) | `src/app/busqueda/busqueda.ts` |
+| `toSignal` con valor inicial, filtro por estado con `signal` + `computed`, total y conteo por estado | `src/app/busqueda/busqueda.ts` |
+| Historial de 5 consultas con `subscribe` + `takeUntilDestroyed()` | `src/app/busqueda/busqueda.ts` |
+| Mensajes: mínimo 2 caracteres, «Buscando…», «Sin coincidencias» (`@empty`), `@for` con `track` | `src/app/busqueda/busqueda.html` |
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+**Regla de búsqueda:** sin tildes ni mayúsculas, el texto recortado con `trim()` debe estar contenido
+en el campo **solicitante** o en el campo **descripción**. Con menos de 2 caracteres no se consulta.
 
-```bash
-ng generate component component-name
-```
+## Cómo ejecutar
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Requisitos: Node.js 20 o superior y npm.
 
 ```bash
-ng test
+git clone https://github.com/melwinguzman33-sys/com30-taller06-guzman.git
+cd com30-taller06-guzman
+npm install
+npx ng serve
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+Abrir `http://localhost:4200/`. Para compilar la versión de producción:
 
 ```bash
-ng e2e
+npx ng build
 ```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
